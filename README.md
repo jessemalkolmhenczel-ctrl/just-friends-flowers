@@ -1,0 +1,94 @@
+[README.md](https://github.com/user-attachments/files/26865938/README.md)
+# Just Friends Flowers — Website
+
+A single-page marketing site with embedded base64 images and a lightweight browser-based CMS.
+
+---
+
+## File Structure
+
+```
+/
+├── index.html          ← Main public website
+├── admin.html          ← CMS login & content editor
+├── netlify.toml        ← Netlify config (redirects, headers)
+└── .github/
+    └── workflows/
+        └── deploy.yml  ← GitHub Actions → Netlify auto-deploy
+```
+
+---
+
+## Local Preview
+
+Just open `index.html` in any modern browser. No build step needed — all images are embedded as base64.
+
+---
+
+## Deploying to Netlify via GitHub
+
+### 1. Create GitHub Repository
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/just-friends-flowers.git
+git push -u origin main
+```
+
+### 2. Connect to Netlify
+1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
+2. Choose your GitHub repo
+3. Build settings:
+   - **Base directory:** *(leave empty)*
+   - **Build command:** *(leave empty)*
+   - **Publish directory:** `.`
+4. Click **Deploy site**
+
+### 3. Add GitHub Secrets for Auto-Deploy (optional CI)
+In your GitHub repo → **Settings → Secrets → Actions**, add:
+- `NETLIFY_AUTH_TOKEN` — from Netlify → User Settings → Personal access tokens
+- `NETLIFY_SITE_ID` — from Netlify → Site Settings → General → Site ID
+
+Future pushes to `main` will auto-deploy via the GitHub Actions workflow.
+
+---
+
+## CMS — Content Editor
+
+Visit `/admin` (or `/admin.html`) on your live site.
+
+| Field    | Value              |
+|----------|--------------------|
+| Username | `camille`          |
+| Password | `Justfriends2026`  |
+
+The CMS lets you edit:
+- **Our Friends** — section heading and body copy
+- **Contact Section** — heading, name, phone, email, city
+
+Content is saved to `localStorage` in the visitor's browser and applied on page load. This is a zero-server CMS: no backend required.
+
+> **Note:** Because content lives in `localStorage`, edits made in the admin panel on the same device/browser will reflect on `index.html`. For a multi-device persistent CMS, integrate Netlify Forms + a service like Airtable or use Netlify CMS / Decap CMS.
+
+---
+
+## Gallery — Adding Images
+
+The gallery currently shows 5 placeholder slots. To add real images, open `index.html` and find the `#galleryTrack` div. Replace a placeholder slot with:
+
+```html
+<div class="gallery-slot">
+  <img src="YOUR_IMAGE_URL_OR_BASE64" alt="Description"/>
+</div>
+```
+
+---
+
+## Customisation Notes
+
+- **Brand colour:** `--brown: #76604a` in `:root` CSS variables
+- **Typography:** Cormorant Garamond (display) + Jost (body) via Google Fonts
+- **Logo:** SVG vector built inline — edit the `<text>` elements to change wording
+- **Hero transition:** Controlled by the scroll handler in the `<script>` — adjust `0.6` multiplier to change transition speed
